@@ -1,0 +1,156 @@
+---
+title: "Data Science Stories"
+subtitle: "Amherst College, Spring 2023"
+output:
+  rmdformats::readthedown
+---
+  
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+#readthedown
+library(fontawesome)
+library(tidyverse)
+library(kableExtra)
+
+# set the seed to keep Hadley's emojis consistent 
+# oh! can get dataset with all emojis available + their names
+# test <- emo::jis
+ 
+# google fonts
+#https://fonts.google.com/
+
+#customizing
+#https://rstudio4edu.github.io/rstudio4edu-book/doc-fancy.html
+```
+
+```{css, echo=FALSE}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+body {
+    font-family: 'Poppins';
+}
+
+h1, h2, h3, h4, h5, h6, legend {
+  font-family: 'Poppins';
+  color: #39224f
+}
+
+#sidebar h2 {
+background-color: #39224f !important;
+  }
+
+#main a {
+color: #39224f !important;
+  background-image: linear-gradient(180deg,#438a8f,#438a8f);
+}
+
+#main .navbar-nav > .active > a { 
+background-color: #39224f !important;
+  color: white !important;
+}
+
+#main li.active a, li a:hover {
+background-color: #39224f !important;
+}
+
+code {
+  color: #39224f;
+}
+
+/*----------------- links ---------------------*/
+a { 
+  color: #8d80ad !important;
+}
+
+a:hover {
+ background-color: #39224f !important;
+}
+
+/*----------LOGO above TOC---------*/
+#toc {
+  background-image: url("img/Mammoth-spring-sticker.gif") !important;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: bottom;
+}
+```
+
+
+```{r}
+library(googlesheets4)
+
+table_dat0 <- read_sheet("https://docs.google.com/spreadsheets/d/1VEv1b-NFj3SbkR6YC7ucKam80g5znjvTwEclwWOkioA/edit#gid=0") 
+
+   
+table_dat <- table_dat0 %>%
+  mutate(images = paste0("![](img/",img_file_names,")")
+                         , title = paste0('<h2 style="font-size:20px;"> ['
+                                          , titles,'](https://stat231-s23.github.io/'
+                                         , blog_link_names
+                                         , ")</h2>")
+                        , text_only = paste0('<p style="color:black;font-size:14px;">',text,'</p>')) %>%
+  mutate(text = paste(title, text_only, sep="<br>")) %>%
+  select(images, text)
+
+extra <- table_dat0 %>%
+  mutate(name = str_replace_all(str_replace_all(blog_link_names, "blog1-|blog2-"
+                                                , "")
+                                , "-|_", " "))
+
+#https://www.color-hex.com/color-palette/26632
+#colorpal <- c("#ccade1","#745085", "#b1b8c0", "#777a7f", "#8f71b1")
+#colorpal <- c("#ede6fb","#cfc3e7","#ae97db", "#805cae","774bb0")
+colorpal <- c("774bb0","#ede6fb")
+```
+
+![](img/College-Row-WJ-night.png)
+
+
+# Welcome! `r emo::ji("slightly_smiling_face")` 
+
+The projects below were created by students at Amherst College as part of a final project for our STAT 231 Data Science course.
+
+Scroll down to explore the students’ blog posts or use the navigation bar on the side to jump to a particular group!
+
+# Blog Posts `r emo::ji("pencil")`
+
+```{r}
+# `r set.seed(12); emo::ji('shot')`
+```
+
+```{r results="asis"}
+# output one document per reviewer, each arranged by who other reviewer is
+for (i in 1:nrow(table_dat)){
+  
+  # put first-level header for new reviewer section
+  cat("  <br> <h2> ",  extra$name[i], " </h2> <br>")
+  
+  # dataset for all dois with one other specific reviewer
+  print(table_dat %>%
+      filter(row_number() == i) %>%
+      kable(col.names=NULL, escape=FALSE) %>%
+      column_spec(1:2, width = c("50em","50em")
+                  , border_left = FALSE
+                  , border_right = FALSE
+                  , background = colorpal[1]) %>%
+     column_spec(1, link = paste0('https://stat231-s23.github.io/'
+                                  , extra$blog_link_names[i]))
+  )
+       
+    cat("<br>")
+}
+```
+
+<br>
+
+# Resources `r emo::ji("books")`
+
+<ul>
+  <li> Graphic at top of page and gif on left of page were created by [Willa Jarnigan](https://www.amherst.edu/people/facstaff/wwjarnagin) </li>
+  <li> Images for each group were created by [DALL-E](https://openai.com/product/dall-e-2) </li>
+  <li> Font is Poppins from [Google fonts](https://fonts.google.com/) </li>
+  <li> Emojis included via the [`emo` R package](https://github.com/hadley/emo) 
+</ul>
+
