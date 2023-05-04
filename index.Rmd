@@ -14,7 +14,7 @@ library(tidyverse)
 library(kableExtra)
 
 # set the seed to keep Hadley's emojis consistent 
-# oh! can get dataset with all emojis available + their names
+# get dataset with all emojis available + their names
 # test <- emo::jis
  
 # google fonts
@@ -102,7 +102,7 @@ extra <- table_dat0 %>%
 #https://www.color-hex.com/color-palette/26632
 #colorpal <- c("#ccade1","#745085", "#b1b8c0", "#777a7f", "#8f71b1")
 #colorpal <- c("#ede6fb","#cfc3e7","#ae97db", "#805cae","774bb0")
-colorpal <- c("774bb0","#ede6fb")
+colorpal <- rep(c("774bb0","#ede6fb"), times = ceiling(nrow(extra)/2))
 ```
 
 ![](img/College-Row-WJ-night.png)
@@ -121,13 +121,11 @@ Scroll down to explore the students’ blog posts or use the navigation bar on t
 ```
 
 ```{r results="asis"}
-# output one document per reviewer, each arranged by who other reviewer is
 for (i in 1:nrow(table_dat)){
   
-  # put first-level header for new reviewer section
+  # put second-level header for each new group
   cat("  <br> <h2> ",  extra$name[i], " </h2> <br>")
   
-  # dataset for all dois with one other specific reviewer
   print(table_dat %>%
       filter(row_number() == i) %>%
       kable(col.names=NULL, escape=FALSE) %>%
