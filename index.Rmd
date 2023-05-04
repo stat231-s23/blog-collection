@@ -110,7 +110,7 @@ colorpal <- rep(c("774bb0","#ede6fb"), times = ceiling(nrow(extra)/2))
 
 # Welcome! `r emo::ji("slightly_smiling_face")` 
 
-The projects below were created by students at Amherst College as part of a final project for our STAT 231 Data Science course.
+The projects below were created by students at Amherst College as part of a final project for our STAT 231 Data Science course. 
 
 Scroll down to explore the students’ blog posts or use the navigation bar on the side to jump to a particular group!
 
